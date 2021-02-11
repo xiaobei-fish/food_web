@@ -1,0 +1,11 @@
+<div id="home-block-item">
+    <a href="{{.Link}}">
+        <img alt="{{.Intro}}" width="200" height="200" src="{{.Pic}}">
+    </a>
+    <span>￥{{.Price}}</span>
+    <a href='javascript:if(confirm("确定移出购物车吗？")){location="/delete/{{.Id}}"}'>移出购物车</a>
+    <div>
+        <span>{{.Store}}</span>
+    </div>
+    <p><a href={{.Link}}>{{.Intro}}</a></p>
+</div>

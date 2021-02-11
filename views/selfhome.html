@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Username}}的个人页面</title>
+    <link href="../static/css/foodsheet.css" rel="stylesheet">
+    <script src="../static/js/lib/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/lib/jquery.url.js"></script>
+    <script src="../static/js/food.js"></script>
+</head>
+<body style="background-color: #72BCB5">
+
+{{template "block/nav.html" .}}
+
+<div id="main">
+    <article id="about-me" class="panel secondary inactive" style="display: flex;">
+        <div>
+            <img src="{{.Picture}}" alt="" data-position="center center" style="border-radius:50%;max-width:100px;max-height:100px;">
+        </div>
+        <div class="content" style="text-align:center;border-width:1px;border-style:solid;border-color:rgb(2, 204, 245);background-color:#79918e6b;border-radius:20px;">
+            <div class="inner">
+                <header>
+                    <h2 style="font-size:3vh;color:#fff;">{{.Username}}_个人信息</h2>
+                    <blockquote style="font-size:3vh;color:#fff;">个人语录:{{.Words}}</blockquote>
+                </header>
+                <p>
+                <h4 style="font-size:3vh;color:#fff;">性别:{{.Sex}}</h4><br>
+                <h6 style="font-size:3vh;color:#fff;">用户类型:{{.Genre}}</h6><br><del></del>
+                </p>
+                <ul class="actions spinX">
+                    <li><a href="/alter" class="button">
+                            <h1 style="font-size:3vh;color:#fff;">修改信息</h1></a></li>
+                    <li><a href="/" class="button"><h1 style="font-size:3vh;color:#fff;">返回</h1></a></li>
+                </ul>
+            </div>
+        </div>
+    </article>
+</div>
+<script type="text/javascript" color="255,255,255" opacity='0.7' zIndex="-2" count="200" src="../static/js/back.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<div id="nav">
+    <div id="nav-write-article">
+        <ul>
+        {{/*如果已经登录且为卖家，才会显示*/}}
+        {{if .IsSeller}}
+            <li><a href="/food/add">食品上架</a></li>
+            <li><a href="/food/del">食品下架</a></li>
+        {{end}}
+        </ul>
+    </div>
+
+
+    <div id="nav-menu">
+        <ul>
+            <li><a href="/">首页</a></li>
+            <li><a>其他内容(扩展项,还没写)</a></li>
+        </ul>
+    </div>
+
+
+    <div id="nav-login">
+        <ul>
+        {{if .IsLogin}}
+            <li><a href="/selfhome">{{.Username}}</a></li>
+            <li><a href="/shop_car">购物车</a></li>
+            <li><a href='/change'>修改密码</a></li>
+            <li><a href='javascript:if(confirm("确定退出吗？")){location="/exit"}'>退出</a></li>
+        {{else}}
+            <li><a href="/login">登录</a></li>
+            <li><a href="/register">注册</a></li>
+        {{end}}
+        </ul>
+    </div>
+
+</div>
