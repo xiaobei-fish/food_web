@@ -27,6 +27,9 @@ func InitMysql() {
 		CreateTableNamedByUserShopCar()
 		CreteTableWithSeller()
 		CreateTableWithUserMes()
+		CreateTableNamedByUserBag()
+		CreteTableWithMoney()
+		CreteTableWithComment()
 	}
 }
 
@@ -110,12 +113,46 @@ func CreateTableNamedByUserShopCar()  {
 	ModifyDB(sql)
 }
 
+//创建用户背包表
+func CreateTableNamedByUserBag()  {
+	sql := `CREATE TABLE IF NOT EXISTS user_bag(
+		id INT(11)  NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		food_store VARCHAR(100),
+		food_pic VARCHAR(200),
+		food_intro VARCHAR(200),
+		food_price VARCHAR(50),
+		user_ids INT(10)
+		)AUTO_INCREMENT = 1;`
+	ModifyDB(sql)
+}
+
 //创建卖家表
 func CreteTableWithSeller(){
 	sql := `CREATE TABLE IF NOT EXISTS sellers(
 		id INT(4) PRIMARY KEY AUTO_INCREMENT NOT NULL,
 		username VARCHAR(64),
 		foodid   VARCHAR(64)
+		);`
+	ModifyDB(sql)
+}
+
+//创建货币表
+func CreteTableWithMoney(){
+	sql := `CREATE TABLE IF NOT EXISTS money(
+		id INT(4) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+		username VARCHAR(64),
+		lmoney   VARCHAR(64)
+		);`
+	ModifyDB(sql)
+}
+
+//创建评论表
+func CreteTableWithComment(){
+	sql := `CREATE TABLE IF NOT EXISTS comment(
+		id INT(4) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+		username VARCHAR(64),
+		foodid   VARCHAR(64),
+		intro	 VARCHAR(200)
 		);`
 	ModifyDB(sql)
 }

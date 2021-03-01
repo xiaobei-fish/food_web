@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"food_web/utils"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"strconv"
 )
@@ -31,6 +32,18 @@ type UserMessage struct{
 	Picture string
 	Sex		string
 }
+type UserMoney struct {
+	Username 	string
+	Money		string
+}
+type UserBag struct {
+	Id		  int
+	FoodStore string
+	FoodPic   string
+	FoodIntro string
+	FoodPrice string
+	UserId	  int
+}
 //插入新用户数据到数据库
 func InsertUser(user User) (int64, error) {
 	return utils.ModifyDB("insert into users(username,password,salt,genre,status,createtime) values (?,?,?,?,?,?)",
@@ -55,6 +68,20 @@ func QueryUserWithCon(con string) int {
 //查询用户的类型
 func QueryUserGenre(username string) bool {
 	sql := fmt.Sprintf("select id from users where username='%s' and genre='1'",username)
+	fmt.Println(sql)
+	row := utils.QueryRowDB(sql)
+	id := 0
+	row.Scan(&id)
+	if id > 0 {
+		return true
+	}else{
+		return false
+	}
+}
+
+//查询用户的类型
+func QueryAdmin(username string) bool {
+	sql := fmt.Sprintf("select id from users where username='%s' and genre='2'",username)
 	fmt.Println(sql)
 	row := utils.QueryRowDB(sql)
 	id := 0
@@ -96,13 +123,13 @@ func QueryFoodWithUserId(userId, foodId string) int {
 
 var usercileRowsNum  = 0
 
-//只有首次获取行数的时候采取统计表里的行数,好像没啥用,前端处理好了
-/*func GetUserRowsNum() int {
+//只有首次获取行数的时候采取统计表里的行数
+func GetUserRowsNum() int {
 	if usercileRowsNum == 0 {
-		usercileRowsNum = QueryNovelRowNum()
+		usercileRowsNum = QueryUserRowNum()
 	}
 	return usercileRowsNum
-}*/
+}
 
 //设置用户页数
 func SetUserRowsNum(){
@@ -117,7 +144,7 @@ func QueryUserRowNum() int {
 	return num
 }
 //查询用户购物车
-func FindCarWithUserId(userid string) ([]Food_info, error) {
+func FindCarWithUserId(userid string) ([]Food_info, error, float64) {
 	Id := QueryUserWithUsername(userid)
 	condition := "(select food_ids from user_shop_car where user_ids="
 	userId := strconv.Itoa(Id) + ")"
@@ -125,9 +152,10 @@ func FindCarWithUserId(userid string) ([]Food_info, error) {
 	//fmt.Println(sql)
 	rows, err := utils.QueryDB(sql)
 	if err != nil {
-		return nil, err
+		return nil, err, 0
 	}
 	var foodList []Food_info
+	var cost	float64
 	for rows.Next() {
 		id := 0
 		store := ""
@@ -136,9 +164,11 @@ func FindCarWithUserId(userid string) ([]Food_info, error) {
 		price := ""
 		rows.Scan(&id, &store, &pic, &intro, &price)
 		food := Food_info{id, store, pic, intro, price}
+		tmp, _ := strconv.ParseFloat(price,64)
+		cost += tmp
 		foodList = append(foodList, food)
 	}
-	return foodList, nil
+	return foodList, nil, cost
 }
 //删除购物车内的食品
 func DeleteCarFoodWithId(foodID string,userID string) (int64, error) {
@@ -146,27 +176,49 @@ func DeleteCarFoodWithId(foodID string,userID string) (int64, error) {
 	fmt.Println(sql)
 	return utils.ModifyDB(sql)
 }
-/*
-//根据页码查询用户并返回数据以便展示
-func FindUserWithPage(page,limit int) []orm.Params {
-	orm.Debug = true
 
+//根据页码查询用户
+func FindUserWithPage(page int) ([]User, error) {
+	//从配置文件中获取每页的文章数量
+	num, _ := beego.AppConfig.Int("userListPageNum")
 	page--
-	sql := fmt.Sprintf("limit %d,%d", page*limit,limit)
-	//fmt.Println("sql:::::::::::",sql)
+	fmt.Println("---------->page", page)
+	return QueryUserWithPage(page, num)
+}
+/**
+分页查询数据库
+limit分页查询语句，
+    语法：limit m，n
+
+    m代表从多少位开始获取，与id值无关
+    n代表获取多少条数据
+
+注意limit前面没有where
+*/
+func QueryUserWithPage(page, num int) ([]User, error) {
+	sql := fmt.Sprintf("limit %d,%d", page*num, num)
+	return FindUserWithCon(sql)
+}
+
+func FindUserWithCon(sql string) ([]User, error) {
 	sql = "select id,username,genre from users " + sql
-	//fmt.Println("sql:::::::::::",sql)
-
-	var Users []orm.Params
-	fmt.Println("var是正常的")
-	i, e := db.Raw(sql).Values(&Users)
-	fmt.Println("输出是:",i)
-	if e != nil {
-		fmt.Println("Raw出错")
+	rows, err := utils.QueryDB(sql)
+	fmt.Println(sql)
+	if err != nil {
+		return nil, err
 	}
+	var userList []User
+	for rows.Next() {
+		id := 0
+		username := ""
+		genre := ""
+		rows.Scan(&id, &username, &genre)
+		user := User{Id:strconv.Itoa(id),Username:username,Genre:genre}
+		userList = append(userList, user)
+	}
+	return userList, nil
+}
 
-	return Users
-}*/
 //个人页面信息操作
 //个人信息插入数据库
 func AddMes(user_message UserMessage)(int64,error){
@@ -261,4 +313,72 @@ func TestOldPassword(oldPassword string) int {
 	row.Scan(&id)
 	fmt.Println("user的id:", id)
 	return id
+}
+
+//查询金额
+func QueryUserMoney(username string) ([]UserMoney, error) {
+	sql := "select id,username,lmoney from money where username='" + username + "'"
+	rows, err := utils.QueryDB(sql)
+	if err != nil {
+		return nil, err
+	}
+	var moneyList []UserMoney
+	for rows.Next() {
+		id := 0
+		username := username
+		lmoney := ""
+		rows.Scan(&id, &username, &lmoney)
+		money := UserMoney{Username:username,Money:lmoney}
+		moneyList = append(moneyList,money)
+	}
+	return moneyList, nil
+}
+//更新金额
+func UpdateUserMoney(username string, money string) (int64,error){
+	sql := "update user_bag SET lmoney='" + money + "' where username='" + username + "'"
+	return utils.ModifyDB(sql)
+}
+//插入物品到背包
+func AddFoodToBag(food Food_info, userid int)(int64,error){
+	return utils.ModifyDB("insert into user_bag(food_store,food_pic,food_intro,food_price,user_ids) values(?,?,?,?,?)",
+		food.FoodStore,food.FoodPic,food.FoodIntro,food.FoodPrice,userid)
+}
+//查询背包
+func QueryUserBag(userid string) ([]UserBag, error) {
+	sql := "select id,food_store,food_pic,food_intro,food_price from user_bag where user_ids='" + userid + "'"
+	rows, err := utils.QueryDB(sql)
+	if err != nil {
+		return nil, err
+	}
+	var bagList []UserBag
+	for rows.Next() {
+		id := 0
+		store := ""
+		pic	  := ""
+		intro := ""
+		price := ""
+		rows.Scan(&id, &store, &pic, &intro, &price)
+		bag := UserBag{Id:id,FoodStore:store,FoodPic:pic,FoodIntro:intro,FoodPrice:price}
+		bagList = append(bagList,bag)
+	}
+	return bagList, nil
+}
+func QueryUserBagById(foodid string) ([]UserBag, error) {
+	sql := "select food_store,food_pic,food_intro,food_price from user_bag where id='" + foodid + "'"
+	rows, err := utils.QueryDB(sql)
+	if err != nil {
+		return nil, err
+	}
+	var bagList []UserBag
+	for rows.Next() {
+		id := foodid
+		store := ""
+		pic	  := ""
+		intro := ""
+		price := ""
+		rows.Scan(&id, &store, &pic, &intro, &price)
+		bag := UserBag{FoodStore:store,FoodPic:pic,FoodIntro:intro,FoodPrice:price}
+		bagList = append(bagList,bag)
+	}
+	return bagList, nil
 }

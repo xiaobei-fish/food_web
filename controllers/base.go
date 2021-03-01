@@ -10,6 +10,7 @@ type BaseController struct {
 	beego.Controller
 	IsLogin   bool
 	IsSeller  bool
+	IsAdmin	  bool
 	Loginuser interface{}
 }
 
@@ -26,11 +27,14 @@ func (c *BaseController) Prepare() {
 		c.IsLogin = true
 		c.Loginuser = loginuser
 		c.IsSeller  = models.QueryUserGenre(username)
+		c.IsAdmin	= models.QueryAdmin(username)
 	} else {
 		c.IsLogin  = false
 		c.IsSeller = false
+		c.IsAdmin  = false
 	}
 	c.Data["Username"] = loginuser
 	c.Data["IsLogin"]  = c.IsLogin
 	c.Data["IsSeller"] = c.IsSeller
+	c.Data["IsAdmin"]  = c.IsAdmin
 }

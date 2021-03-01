@@ -1,17 +1,14 @@
 package controllers
 
-import(
-	"fmt"
+import (
 	"food_web/models"
-	_ "github.com/astaxie/beego"
 )
 
-type HomeController struct {
-	//beego.Controller
+type AdminFoodController struct {
 	BaseController
 }
 
-func(c *HomeController) Get(){
+func (c *AdminFoodController) Get(){
 	page, _ := c.GetInt("page")
 	var foodList []models.Food_info
 
@@ -24,8 +21,7 @@ func(c *HomeController) Get(){
 	c.Data["PageCode"] = models.ConfigHomeFooterPageCode(page)
 	c.Data["HasFooter"] = true
 
-	fmt.Println("IsLogin:", c.IsLogin, c.Loginuser)
-	c.Data["Content"] = models.MakeHomeBlocks(foodList, c.IsLogin)
+	c.Data["Content"] = models.MakeAdminFoodBlocks(foodList, c.IsLogin)
 
-	c.TplName = "home.html"
+	c.TplName = "admin_food.html"
 }

@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"food_web/models"
+	"food_web/utils"
 	"github.com/astaxie/goredis"
 	"log"
 )
@@ -31,5 +32,23 @@ func (c *DetailController) Get(){
 		c.Data["Price"] = food.FoodPrice
 		c.Data["Store"] = food.FoodStore
 	}
+	var commentList []models.Comment
+	commentList = models.QueryFoodCommentById(foodid)
+	fmt.Println(commentList)
+
+	c.Data["Content"] = models.MakeCommentBlocks(commentList,c.IsLogin)
+
 	c.TplName = "food_detail.html"
+}
+
+func (c *DetailController) Post(){
+	comment := c.GetString("comment")
+
+	foodid := c.GetString("id")
+
+	_, _ = utils.ModifyDB("insert into comment(username,foodid,intro) values(?,?,?)",
+		c.Loginuser.(string),foodid,comment)
+
+	c.Data["json"] = map[string]interface{}{"code": 1, "message": "评论成功"}
+	c.ServeJSON()
 }

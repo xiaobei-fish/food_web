@@ -119,3 +119,24 @@ func QueryFoodWithStore(con string) int {
 	fmt.Println("food的id:",id)
 	return id
 }
+//查询商品的评论
+//根据id查询食品信息
+func QueryFoodCommentById(food_id string) []Comment{
+	sql :=fmt.Sprintf("select id,username,intro from comment where foodid='%s'",food_id)
+	rows, err := utils.QueryDB(sql)
+	if err != nil {
+		return nil
+	}
+	var commentList []Comment
+	for rows.Next() {
+		id := 0
+		username := ""
+		intro := ""
+		foodid := food_id
+		rows.Scan(&id, &username, &intro)
+		comment := Comment{Username:username,Intro:intro,FoodId:foodid}
+		commentList = append(commentList, comment)
+	}
+
+	return commentList
+}

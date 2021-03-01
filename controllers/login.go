@@ -20,7 +20,7 @@ func (c *LoginController) Post() {
 	password := c.GetString("password")
 	fmt.Println("username:", username, ",password:", password)
 
-	id := models.QueryUserWithGenre(username, utils.MD5(password),"0' or genre='1")
+	id := models.QueryUserWithGenre(username, utils.MD5(password),"0' or genre='1' or genre='2")
 	fmt.Println("id:", id)
 	if id > 0 {
 		/*

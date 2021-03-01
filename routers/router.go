@@ -29,6 +29,10 @@ func init() {
     beego.Router("/collect",&controllers.CollectController{})
     //移出购物车
     beego.Router("/delete/:id",&controllers.DeleteCarController{})
+    //清空购物车
+    beego.Router("/clear/:cost",&controllers.ClearCarController{})
+    //单独买商品
+    beego.Router("/buy/:id",&controllers.BuyFoodController{})
     //商品详细页
     beego.Router("/food/:id",&controllers.DetailController{})
     //购物车显示
@@ -37,4 +41,16 @@ func init() {
     beego.Router("/food/add",&controllers.FoodLoadController{})
     //商家文件上传
     beego.Router("/upload",&controllers.UploadController{})
+    //警告
+    beego.Router("/warning",&controllers.WarningController{})
+    //背包
+    beego.Router("/bag",&controllers.UserBagController{})
+    beego.Router("/load/:id",&controllers.BagLoadController{})
+    beego.Router("/cancel/:id",&controllers.BagCancelController{})
+    //管理
+    beego.Router("/admin/user",&controllers.AdminUserController{})
+    beego.Router("/admin/food",&controllers.AdminFoodController{})
+    beego.Router("/food/delete/:id",&controllers.FoodDeleteController{})
+    beego.Router("/user/delete/:id",&controllers.UserDeleteController{})
+
 }
