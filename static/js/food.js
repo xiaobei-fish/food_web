@@ -280,4 +280,76 @@ $(document).ready(function () {
         })
     });
 
+    $("#add-form").validate({
+        rules: {
+            money: {
+                required: true,
+                rangelength: [2, 5]
+            }
+        },
+        messages: {
+            money: {
+                required: "请输入充值金额",
+                rangelength: "最少2位，最高5位"
+            }
+        },
+        submitHandler: function (form) {
+            var urlStr = "/admin/user";
+            alert("urlStr:" + urlStr)
+            $(form).ajaxSubmit({
+                url: urlStr,
+                type: "post",
+                dataType: "json",
+                success: function (data, status) {
+                    alert("data:" + data.message + ":" + status)
+                    if (data.code == 1) {
+                        setTimeout(function () {
+                            window.location.href = "/admin/user"
+                        }, 1000)
+                    }
+                },
+                error: function (data, status) {
+                    alert("err:" + data.message + ":" + status)
+                }
+            })
+        }
+    });
+
+    $("#comment-form").validate({
+        rules: {
+            comment: {
+                required: true,
+                rangelength: [2, 100]
+            }
+        },
+        messages: {
+            comment: {
+                required: "请输入您的评论",
+                rangelength: "最少2位，最多100位"
+            }
+        },
+        submitHandler: function (form) {
+            var comId = $("#comment-id").val();
+            var urlStr = "/food/" + comId;
+            alert("urlStr:" + urlStr)
+            $(form).ajaxSubmit({
+                url: urlStr,
+                type: "post",
+                dataType: "json",
+                success: function (data, status) {
+                    alert("data:" + data.message + ":" + status)
+                    if (data.code == 1) {
+                        setTimeout(function () {
+                            location.reload()
+                        }, 1000)
+                    }
+                },
+                error: function (data, status) {
+                    alert("err:" + data.message + ":" + status)
+                }
+            })
+        }
+    });
+
+
 });

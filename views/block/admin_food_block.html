@@ -3,8 +3,7 @@
         <img alt="{{.Intro}}" width="200" height="200" src="{{.Pic}}">
     </a>
     <span>￥{{.Price}}</span>
-    <a href='javascript:if(confirm("确定购买吗？")){location="/buy/{{.Id}}"}'>购买该商品</a>
-    <a href='javascript:if(confirm("确定移出购物车吗？")){location="/delete/{{.Id}}"}'>移出购物车</a>
+    <a href='javascript:if(confirm("确定删除该商品吗？")){location="/food/delete/{{.Id}}"}'>删除该商品</a>
     <div>
         <span>{{.Store}}</span>
     </div>

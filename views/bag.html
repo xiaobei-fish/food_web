@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>购物车</title>
+    <title>背包</title>
     <link href="../static/css/foodsheet.css" rel="stylesheet">
     <script src="../static/js/lib/jquery-3.3.1.min.js"></script>
     <script src="../static/js/lib/jquery.url.js"></script>
@@ -13,9 +13,6 @@
 
 <div id="main">
     {{.Content}}
-
-    <a>总额:{{.Cost}}</a>
-    <a href='javascript:if(confirm("确定购买吗？")){location="/clear/{{.Cost}}"}'>全部购买</a>
             <p class="copyright">© 2020 — 2021</p>
         </div>
     <script type="text/javascript" color="255,255,255" opacity='0.7' zIndex="-2" count="200" src="../static/js/back.js"></script>

@@ -1,0 +1,10 @@
+<div id="home-block-item">
+    <a>用户名:{{.Username}}</a>
+    <a>类型:{{.Genre}}</a>
+    <form id="add-form" class="form">
+        <input type="text" name="money" placeholder="请输入充值金额">
+        <br>
+        <button type="submit" id="login-button">充值金额</button>
+    </form>
+    <a href='javascript:if(confirm("确定删除该用户吗？")){location="/user/delete/{{.Id}}"}'>删除用户</a>
+</div>

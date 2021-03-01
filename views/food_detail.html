@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>{{.Intro}}</title>
     <link href="../static/css/foodsheet.css" rel="stylesheet">
+    <script src="../static/js/lib/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/lib/jquery.url.js"></script>
+    <script src="../static/js/food.js"></script>
 </head>
 <body style="background-color: #72BCB5">
 
@@ -23,6 +26,13 @@
         <span>{{.Store}}</span>
     </div>
     <p><a>{{.Intro}}</a></p>
+    {{.Content}}
+    <form id="comment-form" class="form">
+        <input type="text" name="comment" placeholder="请输入您的评论">
+        <br>
+        <button type="submit" id="login-button">发表评论</button>
+        <input id="comment-id" hidden name="id" value="{{.Id}}">
+    </form>
     <script type="text/javascript" color="255,255,255" opacity='0.7' zIndex="-2" count="200" src="../static/js/back.js"></script>
 </div>
 </body>

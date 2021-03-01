@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>购物车</title>
+    <title>商品管理页面</title>
     <link href="../static/css/foodsheet.css" rel="stylesheet">
     <script src="../static/js/lib/jquery-3.3.1.min.js"></script>
     <script src="../static/js/lib/jquery.url.js"></script>
@@ -12,12 +12,16 @@
 {{template "block/nav.html" .}}
 
 <div id="main">
-    {{.Content}}
+{{.Content}}
 
-    <a>总额:{{.Cost}}</a>
-    <a href='javascript:if(confirm("确定购买吗？")){location="/clear/{{.Cost}}"}'>全部购买</a>
-            <p class="copyright">© 2020 — 2021</p>
-        </div>
+{{if .HasFooter}}
+    <div id="home-footer">
+        <a {{if .PageCode.HasPre}}href="{{.PageCode.PreLink}}" {{else}} class="disable" {{end}}>上一页</a>
+        <span>{{.PageCode.ShowPage}}页</span>
+        <a {{if .PageCode.HasNext}}href="{{.PageCode.NextLink}}" {{else}} class="disable" {{end}}>下一页</a>
+        <p class="copyright">© 2020 — 2021</p>
+    </div>
+{{end}}
     <script type="text/javascript" color="255,255,255" opacity='0.7' zIndex="-2" count="200" src="../static/js/back.js"></script>
 </div>
 </body>
