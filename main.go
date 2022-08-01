@@ -9,6 +9,6 @@ import (
 func main() {
 	utils.InitMysql()
 	utils.LogOn()
-	beego.Run()
+	beego.Run(":8090")
 }
 
