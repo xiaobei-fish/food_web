@@ -16,7 +16,7 @@ func InitMysql() {
 	fmt.Println("InitMysql....")
 	driverName := "mysql"
 
-	dbConn := "root" + ":" + "qwe123" + "@tcp(" + "localhost" + ":" + "3306" + ")/" + "west" + "?charset=utf8"
+	dbConn := "root" + ":" + "qwe123" + "@tcp(" + "localhost" + ":" + "3306" + ")/" + "docker_sql" + "?charset=utf8"
 	fmt.Println(dbConn)
 	db1, err := sql.Open(driverName, dbConn)
 	if err != nil {
