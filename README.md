@@ -18,10 +18,11 @@ httpport = 8090
 runmode = dev
 
 #mysql配置
+#docker配置需要修改host，当然用docker-compose是极好的
 driverName = mysql
 mysqluser = 账号
 mysqlpwd = 密码
-host = localhost
+host = localhost  
 port = 3306
 dbname = 数据库
 
