@@ -44,7 +44,7 @@ func (c *CrawlController) Crawl() {
 			food.FoodPrice = price[i][1]
 			food.FoodPic = "https://img.alicdn.com/bao/uploaded/" + Pic[i][1]
 			//下载图片
-			imgPath := "C:\\Users\\WIN10\\go\\src\\food_web\\static\\img\\"
+			imgPath := "../static/img/"
 			imgUrl := "https://img.alicdn.com/bao/uploaded/" + Pic[i][1]
 			filename := imgPath + strconv.Itoa(number) + ".jpg"
 			req := httplib.Get(imgUrl)
@@ -71,7 +71,7 @@ func (c *CrawlController) Crawl() {
 			food.FoodPrice = price[i][1]
 			food.FoodPic = "https://img.alicdn.com/bao/uploaded/" + Pic[i-5][1]
 			//下载图片
-			imgPath := "C:\\Users\\WIN10\\go\\src\\food_web\\static\\img\\"
+			imgPath := "../static/img/"
 			imgUrl := "https://img.alicdn.com/bao/uploaded/" + Pic[i-5][1]
 			filename := imgPath + strconv.Itoa(number) + ".jpg"
 			req := httplib.Get(imgUrl)

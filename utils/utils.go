@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"database/sql"
 	"fmt"
-	_ "github.com/Go-SQL-Driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/astaxie/beego/logs"
 	"log"
 )
@@ -16,7 +16,7 @@ func InitMysql() {
 	fmt.Println("InitMysql....")
 	driverName := "mysql"
 
-	dbConn := "root" + ":" + "qwe123" + "@tcp(" + "localhost" + ":" + "3306" + ")/" + "docker_sql" + "?charset=utf8"
+	dbConn := "root" + ":" + "qwe123" + "@tcp(" + "localhost" + ":" + "3306" + ")/" + "west" + "?charset=utf8"
 	fmt.Println(dbConn)
 	db1, err := sql.Open(driverName, dbConn)
 	if err != nil {
@@ -38,7 +38,7 @@ func LogOn(){
 	log := logs.NewLogger(10000) //创建一个日志记录器，参数为缓冲区的大小
 	// 设置配置文件
 	jsonConfig := `{
-        "filename" : "C:\\Users\\WIN10\\go\\src\\food_web\\test.log", 
+        "filename" : "../test.log", 
         "maxlines" : 1000,      
         "maxsize"  : 10240
     }`
